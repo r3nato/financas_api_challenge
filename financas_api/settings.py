@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "financas_api.financas",
     "rest_framework",
+    "django_extensions",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
