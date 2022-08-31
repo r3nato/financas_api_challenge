@@ -1,12 +1,12 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueForMonthValidator
-from  .models import Despesa, Receita
+from  .models import Despesa, Receita, CategoriaDespesa
 
 
 class DespesaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Despesa
-        fields = ['id', 'data', 'valor', 'descricao']
+        fields = ['id', 'data', 'valor', 'descricao', 'categoria']
         validators = [
             UniqueForMonthValidator(
                 queryset=Despesa.objects.all(),
