@@ -17,3 +17,19 @@ class ReceitaViewset(viewsets.ModelViewSet):
     serializer_class = ReceitaSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["descricao"]
+
+
+class TransacoesMes(generics.ListAPIView):
+    tipo: str = ''
+
+    def get_queryset(self):
+        if self.tipo == 'despesa':
+            return Despesa.objects.filter(
+                    data__year=self.kwargs['ano'], 
+                    data__month=self.kwargs['mes']
+            )
+        else:
+            return Receita.objects.filter(
+                    data__year=self.kwargs['ano'], 
+                    data__month=self.kwargs['mes']
+            )
