@@ -1,7 +1,8 @@
 from rest_framework import viewsets, filters, generics, views
 from .models import Despesa, Receita
 from .serializers import DespesaSerializer, ReceitaSerializer
-
+from django.db.models import Sum
+from django.http.response import JsonResponse
 
 class DespesaViewset(viewsets.ModelViewSet):
     """Exibindo as despesas cadastradas"""
@@ -33,3 +34,20 @@ class TransacoesMes(generics.ListAPIView):
                     data__year=self.kwargs['ano'], 
                     data__month=self.kwargs['mes']
             )
+
+
+class ResumoMes(views.APIView):
+
+    def get(self, request, ano, mes):
+        filtro_mes_ano = {'data__month':mes, 'data__year':ano}
+        receitas_mes = Receita.objects.filter(**filtro_mes_ano).aggregate(Sum('valor'))['valor__sum'] or 0
+        despesas_mes = Despesa.objects.filter(**filtro_mes_ano).aggregate(Sum('valor'))['valor__sum'] or 0
+        despesas_categorias_mes = Despesa.objects.filter(**filtro_mes_ano).values("categoria").annotate(despesa_categoria=Sum("valor"))
+        total_mes = receitas_mes - despesas_mes
+
+        return JsonResponse({
+            "receitas": receitas_mes, 
+            "despesas": despesas_mes,
+            "despesas_por_categoria": list(despesas_categorias_mes),
+            "total": total_mes
+        })

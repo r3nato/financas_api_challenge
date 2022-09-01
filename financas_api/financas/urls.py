@@ -24,4 +24,9 @@ urlpatterns = [
         ),
         name="receitas-mes"
     ),
+    path(
+        'resumo/<int:ano>/<int:mes>/',
+        views.ResumoMes.as_view(),
+        name="resumo-mes"
+    )
 ]
