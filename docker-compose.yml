@@ -3,7 +3,7 @@ version: "3"
 services:
   web:
     build: .
-    image: r3nato/django-financas-api
+    image: django-finance-api
     command: python manage.py runserver 0.0.0.0:5000
     environment:
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-notasecretatall}

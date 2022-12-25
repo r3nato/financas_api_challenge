@@ -27,7 +27,6 @@ DEBUG = environ.get("DJANGO_DEBUG")
 
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,7 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "financas_api.financas",
+    "finance_api.core",
     "rest_framework",
     "django_extensions",
     "django_filters",
@@ -53,7 +52,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "financas_api.urls"
+ROOT_URLCONF = "finance_api.web.urls"
 
 TEMPLATES = [
     {
@@ -71,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "financas_api.wsgi.application"
+WSGI_APPLICATION = "finance_api.wsgi.application"
 
 
 # Database

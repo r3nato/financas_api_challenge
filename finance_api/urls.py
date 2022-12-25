@@ -1,4 +1,4 @@
-"""financas_api URL Configuration
+"""finance_api URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -18,5 +18,5 @@ from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include(("financas_api.financas.urls", "financas"))),
+    path("", include(("finance_api.web.urls", "api"))),
 ]
