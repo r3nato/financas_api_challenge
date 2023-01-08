@@ -1,22 +1,29 @@
-from django.db.models import Case, CharField, Sum, Value, When
-from finance_api.core.models import Expense, Income
+from django.db.models import F, Sum
+from finance_api.core.models import Category, Expense, Income
 from rest_framework import filters, generics, response, views, viewsets
 
-from .serializers import ExpenseSerializer, IncomeSerializer
+from .serializers import CategorySerializer, ExpenseSerializer, IncomeSerializer
 
 
-class ExpenseViewset(viewsets.ModelViewSet):
+class ExpenseViewSet(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["description"]
 
 
-class IncomeViewset(viewsets.ModelViewSet):
+class IncomeViewSet(viewsets.ModelViewSet):
     queryset = Income.objects.all()
     serializer_class = IncomeSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["description"]
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["name", "description"]
 
 
 class MonthTransactions(generics.ListAPIView):
@@ -36,22 +43,16 @@ class MonthTransactions(generics.ListAPIView):
 class MonthSummary(views.APIView):
     def get(self, request, year, month):
         date_filter = {"date__month": month, "date__year": year}
-        month_incomes = (
-            Income.objects.filter(**date_filter).aggregate(Sum("value"))["value__sum"]
-            or 0
-        )
-        month_expenses = (
-            Expense.objects.filter(**date_filter).aggregate(Sum("value"))["value__sum"]
-            or 0
-        )
-        whens_categories = [
-            When(category=k, then=Value(v)) for k, v in Expense.ExpenseCategory.choices
-        ]
+        month_incomes = Income.objects.filter(**date_filter).aggregate(
+            Sum("value", default=0)
+        )["value__sum"]
+        month_expenses = Expense.objects.filter(**date_filter).aggregate(
+            Sum("value", default=0)
+        )["value__sum"]
         expense_per_category = (
             Expense.objects.filter(**date_filter)
-            .annotate(category_name=Case(*whens_categories, output_field=CharField()))
-            .values("category_name")
-            .annotate(category_expense=Sum("value"))
+            .values("category__name")
+            .annotate(category_expense=Sum("value", default=0))
         )
         month_total = month_incomes - month_expenses
 

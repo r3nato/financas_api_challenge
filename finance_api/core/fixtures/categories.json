@@ -1,0 +1,58 @@
+[
+  {
+    "model": "core.Category",
+    "pk": 1,
+    "fields": {
+      "name": "Food",
+      "description": "Supermarket, restaurant,  etc."
+    }
+  },
+  {
+    "model": "core.Category",
+    "pk": 2,
+    "fields": {
+      "name": "Education",
+      "description": "Courses, educational material."
+    }
+  },
+  {
+    "model": "core.Category",
+    "pk": 3,
+    "fields": {
+      "name": "Personal",
+      "description": "Personal stuff."
+    }
+  },
+  {
+    "model": "core.Category",
+    "pk": 4,
+    "fields": {
+      "name": "Health",
+      "description": "Health plan, medicine, treatment."
+    }
+  },
+  {
+    "model": "core.Category",
+    "pk": 5,
+    "fields": {
+      "name": "Housing",
+      "description": "Water, electricity, house maintenance, rent."
+    }
+  },
+  {
+    "model": "core.Category",
+    "pk": 6,
+    "fields": {
+      "name": "Transportation",
+      "description": "Fuel, car maintenance, etc."
+    }
+  },
+  {
+    "model": "core.Category",
+    "pk": 7,
+    "fields": {
+      "name": "Other",
+      "description": "Other"
+    }
+  }
+]
